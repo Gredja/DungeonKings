@@ -14,7 +14,6 @@ namespace DungeonKings.Controllers
         /// <summary>
         /// Get game & room current versions information.
         /// </summary>
-        /// <returns></returns>
         public Version Get()
         {
             return new Version();
@@ -25,14 +24,14 @@ namespace DungeonKings.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/Settings/GameSettingsUpload")]
-        public async Task<IHttpActionResult> GameSettingsUpload()
+        public async Task<IHttpActionResult> GameSettingsUpload(GameSettings settings)
         {
-            //if (settings?.Content != null && settings.Content.Any())
-            //{
-            //    await Task.Delay(5000);
+            if (settings?.Content != null && settings.Content.Any())
+            {
+                await Task.Delay(5000);
 
-            //    return Ok("Game settings were uploaded");
-            //}
+                return Ok("Game settings were uploaded");
+            }
 
             return StatusCode(HttpStatusCode.NoContent);
         }

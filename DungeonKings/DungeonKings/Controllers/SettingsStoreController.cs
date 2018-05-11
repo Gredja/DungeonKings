@@ -6,9 +6,9 @@ using DungeonKings.Models;
 namespace DungeonKings.Controllers
 {
     /// <summary>
-    /// Settings.
+    /// Settings store.
     /// </summary>
-    public class SettingsController : ApiController
+    public class SettingsStoreController : ApiController
     {
         /// <summary>
         /// Get game & room current versions information.
@@ -22,7 +22,7 @@ namespace DungeonKings.Controllers
         /// <summary>
         /// Upload game settings.
         /// </summary>
-        [Route("GameSettingsUpload")]
+        [Route("GameSettingsStoreUpload")]
         public IHttpActionResult GameSettingsUpload(GameSettings settings)
         {
             if (settings?.Content != null && settings.Content.Any())
@@ -36,7 +36,7 @@ namespace DungeonKings.Controllers
         /// <summary>
         /// Upload room settings.
         /// </summary>
-        [Route("RoomSettingsUpload")]
+        [Route("RoomSettingsStoreUpload")]
         public IHttpActionResult RoomSettingsUpload(RoomSettings settings)
         {
             if (settings?.Content != null && settings.Content.Any())

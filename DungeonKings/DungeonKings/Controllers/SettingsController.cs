@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
 using DungeonKings.Models;
 
@@ -23,10 +24,12 @@ namespace DungeonKings.Controllers
         /// Upload game settings.
         /// </summary>
         [Route("GameSettingsUpload")]
-        public IHttpActionResult GameSettingsUpload(GameSettings settings)
+        public async Task<IHttpActionResult> GameSettingsUpload(GameSettings settings)
         {
             if (settings?.Content != null && settings.Content.Any())
             {
+                await Task.Delay(5000);
+
                 return Ok("Game settings were uploaded");
             }
 
@@ -37,10 +40,12 @@ namespace DungeonKings.Controllers
         /// Upload room settings.
         /// </summary>
         [Route("RoomSettingsUpload")]
-        public IHttpActionResult RoomSettingsUpload(RoomSettings settings)
+        public async Task<IHttpActionResult> RoomSettingsUpload(RoomSettings settings)
         {
             if (settings?.Content != null && settings.Content.Any())
             {
+                await Task.Delay(5000);
+
                 return Ok("Room settings were uploaded");
             }
 

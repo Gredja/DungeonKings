@@ -23,7 +23,7 @@ namespace DungeonKings.Controllers
         /// <summary>
         /// Upload game settings.
         /// </summary>
-        [Route("GameSettingsStoreUpload")]
+        [Route("api/GameSettingsStoreUpload")]
         public async Task<IHttpActionResult> GameSettingsUpload(GameSettings settings)
         {
             if (settings?.Content != null && settings.Content.Any())
@@ -39,7 +39,7 @@ namespace DungeonKings.Controllers
         /// <summary>
         /// Upload room settings.
         /// </summary>
-        [Route("RoomSettingsStoreUpload")]
+        [Route("api/RoomSettingsStoreUpload")]
         public async Task<IHttpActionResult> RoomSettingsUpload(RoomSettings settings)
         {
             if (settings?.Content != null && settings.Content.Any())
@@ -56,14 +56,14 @@ namespace DungeonKings.Controllers
         /// Get settings activity.
         /// </summary>
         [HttpPost]
-        [Route("GetSettingsActivity")]
+        [Route("api/GetSettingsActivity")]
         public IHttpActionResult GetSettingsActivity(SettingsActivity activity)
         {
             if (activity != null)
             {
                 if (activity.Common != activity.Sale)
                 {
-                    return Ok("Get settings activity");
+                    return Ok("Got settings activity");
                 }
 
                 return StatusCode(HttpStatusCode.BadRequest);

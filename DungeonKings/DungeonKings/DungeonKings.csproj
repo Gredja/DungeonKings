@@ -193,10 +193,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Base\Settings.cs" />
-    <Compile Include="Models\GameSettings.cs" />
     <Compile Include="Models\GameSettingsStatus.cs" />
-    <Compile Include="Models\RoomSettings.cs" />
     <Compile Include="Models\SettingsActivity.cs" />
     <Compile Include="Models\Version.cs" />
     <Compile Include="Models\WorkStatus.cs" />

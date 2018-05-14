@@ -28,7 +28,14 @@ namespace DungeonKings.Controllers
         [Route("api/Settings/GameSettingsUpload")]
         public IHttpActionResult GameSettingsUpload([FromBody] string[] urls)
         {
-            IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
+            //IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
+
+            if (SettingsProcessor.Instance.GetGameProcessingsStatus().Status == WorkStatus.Iddle)
+            {
+                SettingsProcessor.Instance.ProcessGameSettings();
+                return Ok();
+            }
+            IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Game Settings is Processed")));
 
             if (urls != null && urls.Any())
             {
@@ -36,6 +43,14 @@ namespace DungeonKings.Controllers
             }
 
             return result;
+        }
+
+        [HttpPost]
+        [Route("api/Settings/GameStatus")]
+        public IHttpActionResult GameStatus()
+        {
+            var status = SettingsProcessor.Instance.GetGameProcessingsStatus();
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
         }
 
         /// <summary>

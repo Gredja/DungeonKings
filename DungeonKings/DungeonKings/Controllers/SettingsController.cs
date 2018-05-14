@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
+using System.Net.Http;
 using System.Web.Http;
+using DungeonKings.ErrorModel;
 using DungeonKings.Models;
+using DungeonKings.Services;
 
 namespace DungeonKings.Controllers
 {
@@ -24,15 +26,16 @@ namespace DungeonKings.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/Settings/GameSettingsUpload")]
-        public async Task<IHttpActionResult> GameSettingsUpload([FromBody] string[] urls)
+        public IHttpActionResult GameSettingsUpload([FromBody] string[] urls)
         {
+            IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
+
             if (urls != null && urls.Any())
             {
-                await Task.Delay(5000);
-                return Ok("Game settings were uploaded");
+                result = SettingsProcessor.Instance.Process(urls, Request);
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return result;
         }
 
         /// <summary>
@@ -40,15 +43,16 @@ namespace DungeonKings.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/Settings/RoomSettingsUpload")]
-        public async Task<IHttpActionResult> RoomSettingsUpload([FromBody] string[] urls)
+        public IHttpActionResult RoomSettingsUpload([FromBody] string[] urls)
         {
+            IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
+
             if (urls != null && urls.Any())
             {
-                await Task.Delay(5000);
-                return Ok("Game settings were uploaded");
+                result = SettingsProcessor.Instance.Process(urls, Request);
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return result;
         }
     }
 }

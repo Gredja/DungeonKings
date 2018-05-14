@@ -189,14 +189,17 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SettingsStoreController.cs" />
+    <Compile Include="ErrorModel\ErrorBody.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Base\Settings.cs" />
     <Compile Include="Models\GameSettings.cs" />
+    <Compile Include="Models\GameSettingsStatus.cs" />
     <Compile Include="Models\RoomSettings.cs" />
     <Compile Include="Models\SettingsActivity.cs" />
     <Compile Include="Models\Version.cs" />
+    <Compile Include="Models\WorkStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -283,7 +286,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51595</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -2,6 +2,6 @@
 {
     public class Settings
     {
-        public string[] Content { get; set; }
+        public string[] Urls { get; set; }
     }
 }

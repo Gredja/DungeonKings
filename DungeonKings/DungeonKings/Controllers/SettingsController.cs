@@ -26,10 +26,9 @@ namespace DungeonKings.Controllers
         [Route("api/Settings/GameSettingsUpload")]
         public async Task<IHttpActionResult> GameSettingsUpload(GameSettings settings)
         {
-            if (settings?.Content != null && settings.Content.Any())
+            if (settings?.Urls != null && settings.Urls.Any())
             {
                 await Task.Delay(5000);
-
                 return Ok("Game settings were uploaded");
             }
 
@@ -43,11 +42,10 @@ namespace DungeonKings.Controllers
         [Route("api/Settings/RoomSettingsUpload")]
         public async Task<IHttpActionResult> RoomSettingsUpload(RoomSettings settings)
         {
-            if (settings?.Content != null && settings.Content.Any())
+            if (settings?.Urls != null && settings.Urls.Any())
             {
                 await Task.Delay(5000);
-
-                return Ok("Room settings were uploaded");
+                return Ok("Game settings were uploaded");
             }
 
             return StatusCode(HttpStatusCode.NoContent);

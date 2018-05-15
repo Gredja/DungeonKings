@@ -11,7 +11,7 @@ namespace DungeonKings.Controllers
     /// <summary>
     /// Settings store.
     /// </summary>
-    public class SettingsStoreController : ApiController
+    public class StoreController : ApiController
     {
         /// <summary>
         /// Get game & room current versions information.
@@ -32,7 +32,7 @@ namespace DungeonKings.Controllers
 
             if (urls != null && urls.Any())
             {
-                result = SettingsProcessor.Instance.Process(urls, Request);
+              //  result = SettingsProcessor.Instance.Process(urls, Request);
             }
 
             return result;
@@ -48,7 +48,7 @@ namespace DungeonKings.Controllers
 
             if (urls != null && urls.Any())
             {
-                result = SettingsProcessor.Instance.Process(urls, Request);
+              //  result = SettingsProcessor.Instance.Process(urls, Request);
             }
 
             return result;

@@ -1,7 +1,4 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using DungeonKings.ErrorModel;
+﻿using System.Web.Http;
 using DungeonKings.Models;
 using Timer = System.Timers.Timer;
 
@@ -10,63 +7,103 @@ namespace DungeonKings.Services
 
     public sealed class SettingsProcessor : ApiController
     {
+        private static readonly Timer GameSettingsTimer = new Timer(6000);
+        private static readonly Timer RoomSettingsTimer = new Timer(6000);
+
+        private static readonly Timer SaleStoreTImer = new Timer(6000);
+        private static readonly Timer CommonStoreTImer = new Timer(6000);
+
         private static SettingsProcessor _instance;
-        private static readonly Timer _timer = new Timer(5000);
-        private static readonly Timer _gameSettingsTimer = new Timer(5000);
 
         public SettingsProcessor()
         {
-            _timer.Elapsed += TimerElapsed;
+            GameSettingsTimer.Elapsed += GameTimerElapsed;
+            RoomSettingsTimer.Elapsed += RoomTimerElapsed;
+            SaleStoreTImer.Elapsed += SaleStoreTimerElapsed;
+            CommonStoreTImer.Elapsed += CommonStoreTImerElapsed;
         }
 
         public static SettingsProcessor Instance => _instance ?? (_instance = new SettingsProcessor());
 
 
-        public GameSettingsStatus GetGameProcessingsStatus()
+        public ProcessingStatus GetGameProcessingStatus()
         {
-            if (_gameSettingsTimer.Enabled)
-            {
-                return new GameSettingsStatus()
-                {
-                                Status = WorkStatus.Iddle,
-                                ProcessingPercent = 0,
-                                Version = "sdkjfhsjkldfj"
-                };
-            }
-            else
-            {
-                return new GameSettingsStatus()
-                {
-                                Status = WorkStatus.Processed,
-                                ProcessingPercent = 80,
-                                Version = "8457834"
-                };
-            }
+            return GameSettingsTimer.Enabled ? GetProcessedStatus() : GetIddleStatus();
         }
 
+        public ProcessingStatus GetRoomProcessingStatus()
+        {
+            return RoomSettingsTimer.Enabled ? GetProcessedStatus() : GetIddleStatus();
+        }
+
+        public ProcessingStatus GetCommonProcessingStatus()
+        {
+            return CommonStoreTImer.Enabled ? GetProcessedStatus() : GetIddleStatus();
+        }
+
+        public ProcessingStatus GetSaleProcessingStatus()
+        {
+            return SaleStoreTImer.Enabled ? GetProcessedStatus() : GetIddleStatus();
+        }
 
         public void ProcessGameSettings()
         {
-            _gameSettingsTimer.Start();
+            GameSettingsTimer.Start();
         }
 
-        public IHttpActionResult Process(string[] urls, HttpRequestMessage request)
+        public void ProcessRoomSettings()
         {
-            IHttpActionResult result = ResponseMessage(request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Process is running")));
+            RoomSettingsTimer.Start();
+        }
 
-            if (!_timer.Enabled)
+        public void ProcessCommonStore()
+        {
+            CommonStoreTImer.Start();
+        }
+
+        public void ProcessSaleStore()
+        {
+            SaleStoreTImer.Start();
+        }
+
+        private void GameTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            GameSettingsTimer.Stop();
+        }
+
+        private void RoomTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            RoomSettingsTimer.Stop();
+        }
+
+        private void CommonStoreTImerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            CommonStoreTImer.Stop();
+        }
+
+        private void SaleStoreTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            SaleStoreTImer.Stop();
+        }
+
+        private static ProcessingStatus GetProcessedStatus()
+        {
+            return new ProcessingStatus
             {
-                _timer.Start();
-
-                result = ResponseMessage(request.CreateResponse(HttpStatusCode.OK, new ErrorBody(HttpStatusCode.OK.ToString(), "Settings are applying")));
-            }
-
-            return result;
+                Status = WorkStatus.Processed,
+                ProcessingPercent = 80,
+                Version = "1.0.1"
+            };
         }
 
-        private void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private static ProcessingStatus GetIddleStatus()
         {
-            _timer.Stop();
+            return new ProcessingStatus
+            {
+                Status = WorkStatus.Idle,
+                ProcessingPercent = 0,
+                Version = "1.0.1"
+            };
         }
     }
 }

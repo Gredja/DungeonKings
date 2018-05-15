@@ -188,12 +188,12 @@
     <Compile Include="Controllers\EnvironmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Controllers\SettingsStoreController.cs" />
+    <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="ErrorModel\ErrorBody.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\GameSettingsStatus.cs" />
+    <Compile Include="Models\ProcessingStatus.cs" />
     <Compile Include="Models\SettingsActivity.cs" />
     <Compile Include="Models\Version.cs" />
     <Compile Include="Models\WorkStatus.cs" />
@@ -255,7 +255,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\SettingsStore\" />
+    <Folder Include="Views\Store\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

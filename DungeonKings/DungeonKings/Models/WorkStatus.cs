@@ -5,7 +5,7 @@ namespace DungeonKings.Models
 {
     public enum WorkStatus
     {
-        Iddle,
+        Idle,
         Processed
     }
 }

@@ -21,6 +21,22 @@ namespace DungeonKings.Controllers
             return new Version();
         }
 
+        [HttpGet]
+        [Route("api/Settings/GameStatus")]
+        public IHttpActionResult GameStatus()
+        {
+            var status = SettingsProcessor.Instance.GetGameProcessingStatus();
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
+        }
+
+        [HttpGet]
+        [Route("api/Settings/RoomStatus")]
+        public IHttpActionResult RoomStatus()
+        {
+            var status = SettingsProcessor.Instance.GetRoomProcessingStatus();
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
+        }
+
         /// <summary>
         /// Upload game settings.
         /// </summary>
@@ -28,29 +44,19 @@ namespace DungeonKings.Controllers
         [Route("api/Settings/GameSettingsUpload")]
         public IHttpActionResult GameSettingsUpload([FromBody] string[] urls)
         {
-            //IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
-
-            if (SettingsProcessor.Instance.GetGameProcessingsStatus().Status == WorkStatus.Iddle)
-            {
-                SettingsProcessor.Instance.ProcessGameSettings();
-                return Ok();
-            }
-            IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Game Settings is Processed")));
-
             if (urls != null && urls.Any())
             {
-                result = SettingsProcessor.Instance.Process(urls, Request);
+                if (SettingsProcessor.Instance.GetGameProcessingStatus().Status == WorkStatus.Idle)
+                {
+                    SettingsProcessor.Instance.ProcessGameSettings();
+                    return Ok();
+                }
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Game Settings is Processed")));
+
             }
 
-            return result;
-        }
-
-        [HttpPost]
-        [Route("api/Settings/GameStatus")]
-        public IHttpActionResult GameStatus()
-        {
-            var status = SettingsProcessor.Instance.GetGameProcessingsStatus();
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
         }
 
         /// <summary>
@@ -60,14 +66,18 @@ namespace DungeonKings.Controllers
         [Route("api/Settings/RoomSettingsUpload")]
         public IHttpActionResult RoomSettingsUpload([FromBody] string[] urls)
         {
-            IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
-
             if (urls != null && urls.Any())
             {
-                result = SettingsProcessor.Instance.Process(urls, Request);
+                if (SettingsProcessor.Instance.GetRoomProcessingStatus().Status == WorkStatus.Idle)
+                {
+                    SettingsProcessor.Instance.ProcessRoomSettings();
+                    return Ok();
+                }
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Room Settings is Processed")));
             }
 
-            return result;
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
         }
     }
 }

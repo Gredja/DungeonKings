@@ -7,9 +7,9 @@ namespace DungeonKings.Services
 
     public sealed class SettingsProcessor : ApiController
     {
+        private static readonly Timer EnvironmentTimer = new Timer(6000);
         private static readonly Timer GameSettingsTimer = new Timer(6000);
         private static readonly Timer RoomSettingsTimer = new Timer(6000);
-
         private static readonly Timer SaleStoreTImer = new Timer(6000);
         private static readonly Timer CommonStoreTImer = new Timer(6000);
 
@@ -21,14 +21,19 @@ namespace DungeonKings.Services
             RoomSettingsTimer.Elapsed += RoomTimerElapsed;
             SaleStoreTImer.Elapsed += SaleStoreTimerElapsed;
             CommonStoreTImer.Elapsed += CommonStoreTImerElapsed;
+            EnvironmentTimer.Elapsed += EnvironmentTimerElapsed;
         }
 
         public static SettingsProcessor Instance => _instance ?? (_instance = new SettingsProcessor());
 
-
         public ProcessingStatus GetGameProcessingStatus()
         {
             return GameSettingsTimer.Enabled ? GetProcessedStatus() : GetIddleStatus();
+        }
+
+        public ProcessingStatus GetEnvironmentProcessingStatus()
+        {
+            return EnvironmentTimer.Enabled ? GetProcessedStatus() : GetIddleStatus();
         }
 
         public ProcessingStatus GetRoomProcessingStatus()
@@ -44,6 +49,11 @@ namespace DungeonKings.Services
         public ProcessingStatus GetSaleProcessingStatus()
         {
             return SaleStoreTImer.Enabled ? GetProcessedStatus() : GetIddleStatus();
+        }
+
+        public void ProcessEnvironmentSettings()
+        {
+            EnvironmentTimer.Start();
         }
 
         public void ProcessGameSettings()
@@ -84,6 +94,11 @@ namespace DungeonKings.Services
         private void SaleStoreTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             SaleStoreTImer.Stop();
+        }
+
+        private void EnvironmentTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            EnvironmentTimer.Stop();
         }
 
         private static ProcessingStatus GetProcessedStatus()

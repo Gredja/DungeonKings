@@ -16,7 +16,6 @@ namespace DungeonKings
             GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
                     {
-                        c.DescribeAllEnumsAsStrings();
                         // By default, the service root url is inferred from the request used to access the docs.
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
                         // resolve correctly. You can workaround this by providing your own code to determine the root URL.
@@ -105,8 +104,6 @@ namespace DungeonKings
 
                         c.IncludeXmlComments(GetXmlCommentsPath());
 
-                        c.DescribeAllEnumsAsStrings();
-
                         // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types
                         // exposed in your API. However, there may be occasions when more control of the output is needed.
                         // This is supported through the "MapType" and "SchemaFilter" options:
@@ -147,7 +144,8 @@ namespace DungeonKings
                         // enum type. Swashbuckle will honor this change out-of-the-box. However, if you use a different
                         // approach to serialize enums as strings, you can also force Swashbuckle to describe them as strings.
                         //
-                        //c.DescribeAllEnumsAsStrings();
+
+                        c.DescribeAllEnumsAsStrings();
 
                         // Similar to Schema filters, Swashbuckle also supports Operation and Document filters:
                         //

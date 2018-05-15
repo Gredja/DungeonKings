@@ -22,24 +22,22 @@ namespace DungeonKings.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get game status.
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         [Route("api/Settings/GameStatus")]
-        public IHttpActionResult GameStatus()
+        public IHttpActionResult GameSettingsStatus()
         {
             var status = SettingsProcessor.Instance.GetGameProcessingStatus();
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
         }
 
         /// <summary>
-        /// 
+        /// Get room status.
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         [Route("api/Settings/RoomStatus")]
-        public IHttpActionResult RoomStatus()
+        public IHttpActionResult RoomSettingsStatus()
         {
             var status = SettingsProcessor.Instance.GetRoomProcessingStatus();
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
@@ -49,15 +47,15 @@ namespace DungeonKings.Controllers
         /// Upload game settings.
         /// </summary>
         [HttpPost]
-        [Route("api/Settings/GameSettingsUpload")]
-        public IHttpActionResult GameSettingsUpload([FromBody] string[] urls)
+        [Route("api/Settings/GameSubmit")]
+        public IHttpActionResult GameSettingsSubmit([FromBody] string[] urls)
         {
             if (urls != null && urls.Any())
             {
                 if (SettingsProcessor.Instance.GetGameProcessingStatus().Status == WorkStatus.Idle)
                 {
                     SettingsProcessor.Instance.ProcessGameSettings();
-                    return Ok();
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, Constants.StartProcess));
                 }
 
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Game Settings is Processed")));
@@ -71,15 +69,15 @@ namespace DungeonKings.Controllers
         /// Upload room settings.
         /// </summary>
         [HttpPost]
-        [Route("api/Settings/RoomSettingsUpload")]
-        public IHttpActionResult RoomSettingsUpload([FromBody] string[] urls)
+        [Route("api/Settings/RoomSubmit")]
+        public IHttpActionResult RoomSettingsSubmit([FromBody] string[] urls)
         {
             if (urls != null && urls.Any())
             {
                 if (SettingsProcessor.Instance.GetRoomProcessingStatus().Status == WorkStatus.Idle)
                 {
                     SettingsProcessor.Instance.ProcessRoomSettings();
-                    return Ok();
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, Constants.StartProcess));
                 }
 
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Room Settings is Processed")));

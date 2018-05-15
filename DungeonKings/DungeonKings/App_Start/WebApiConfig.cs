@@ -1,4 +1,6 @@
 ﻿using System.Web.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace DungeonKings
 {
@@ -16,6 +18,13 @@ namespace DungeonKings
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            JsonConvert.DefaultSettings = () =>
+            {
+                var settings = new JsonSerializerSettings();
+                settings.Converters.Add(new StringEnumConverter {CamelCaseText = true});
+                return settings;
+            };
         }
     }
 }

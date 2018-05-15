@@ -16,7 +16,6 @@ namespace DungeonKings.Controllers
         /// <summary>
         /// Get game & room current versions information.
         /// </summary>
-        /// <returns></returns>
         public Version Get()
         {
             return new Version();
@@ -25,9 +24,9 @@ namespace DungeonKings.Controllers
         /// <summary>
         /// Get common status.
         /// </summary>
-   [HttpGet]
+        [HttpGet]
         [Route("api/Store/CommonStatus")]
-        public IHttpActionResult CommonStatus()
+        public IHttpActionResult StoreCommonStatus()
         {
             var status = SettingsProcessor.Instance.GetCommonProcessingStatus();
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
@@ -38,7 +37,7 @@ namespace DungeonKings.Controllers
         /// </summary>
         [HttpGet]
         [Route("api/Store/SaleStatus")]
-        public IHttpActionResult SaleStatus()
+        public IHttpActionResult StoreSaleStatus()
         {
             var status = SettingsProcessor.Instance.GetSaleProcessingStatus();
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
@@ -47,15 +46,15 @@ namespace DungeonKings.Controllers
         /// <summary>
         /// Upload common store.
         /// </summary>
-        [Route("api/Store/CommonStoreUpload")]
-        public IHttpActionResult GameSettingsUpload([FromBody] string[] urls)
+        [Route("api/Store/CommonSubmit")]
+        public IHttpActionResult StoreCommonSubmit([FromBody] string[] urls)
         {
             if (urls != null && urls.Any())
             {
                 if (SettingsProcessor.Instance.GetCommonProcessingStatus().Status == WorkStatus.Idle)
                 {
                     SettingsProcessor.Instance.ProcessCommonStore();
-                    return Ok();
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, Constants.StartProcess));
                 }
 
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Common Store is Processed")));
@@ -67,15 +66,15 @@ namespace DungeonKings.Controllers
         /// <summary>
         /// Upload sale store.
         /// </summary>
-        [Route("api/Store/SaleStoreUpload")]
-        public IHttpActionResult RoomSettingsUpload([FromBody] string[] urls)
+        [Route("api/Store/SaleSubmit")]
+        public IHttpActionResult StoreSaleSubmit([FromBody] string[] urls)
         {
             if (urls != null && urls.Any())
             {
                 if (SettingsProcessor.Instance.GetSaleProcessingStatus().Status == WorkStatus.Idle)
                 {
                     SettingsProcessor.Instance.ProcessSaleStore();
-                    return Ok();
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, Constants.StartProcess));
                 }
 
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Sale Store is Processed")));
@@ -101,6 +100,20 @@ namespace DungeonKings.Controllers
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Get active store settings.
+        /// </summary>
+        [HttpGet]
+        [Route("api/Store/ActiveStoreSettings")]
+        public SettingsActivity ActiveStoreSettings()
+        {
+            return new SettingsActivity()
+            {
+                Common = false,
+                Sale = true
+            };
         }
     }
 }

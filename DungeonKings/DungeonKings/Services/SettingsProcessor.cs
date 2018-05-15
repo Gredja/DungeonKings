@@ -7,11 +7,11 @@ namespace DungeonKings.Services
 
     public sealed class SettingsProcessor : ApiController
     {
-        private static readonly Timer EnvironmentTimer = new Timer(6000);
-        private static readonly Timer GameSettingsTimer = new Timer(6000);
-        private static readonly Timer RoomSettingsTimer = new Timer(6000);
-        private static readonly Timer SaleStoreTImer = new Timer(6000);
-        private static readonly Timer CommonStoreTImer = new Timer(6000);
+        private static readonly Timer EnvironmentTimer = new Timer(60000);
+        private static readonly Timer GameSettingsTimer = new Timer(60000);
+        private static readonly Timer RoomSettingsTimer = new Timer(60000);
+        private static readonly Timer SaleStoreTImer = new Timer(60000);
+        private static readonly Timer CommonStoreTImer = new Timer(60000);
 
         private static SettingsProcessor _instance;
 

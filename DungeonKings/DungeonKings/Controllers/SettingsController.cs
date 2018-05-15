@@ -21,6 +21,10 @@ namespace DungeonKings.Controllers
             return new Version();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/Settings/GameStatus")]
         public IHttpActionResult GameStatus()
@@ -29,6 +33,10 @@ namespace DungeonKings.Controllers
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/Settings/RoomStatus")]
         public IHttpActionResult RoomStatus()
@@ -56,7 +64,7 @@ namespace DungeonKings.Controllers
 
             }
 
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), Constants.EmptyUrls)));
         }
 
         /// <summary>
@@ -77,7 +85,7 @@ namespace DungeonKings.Controllers
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Room Settings is Processed")));
             }
 
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), Constants.EmptyUrls)));
         }
     }
 }

@@ -23,51 +23,80 @@ namespace DungeonKings.Controllers
         }
 
         /// <summary>
-        /// Upload game settings.
+        /// Get common status.
         /// </summary>
-        [Route("api/GameSettingsStoreUpload")]
-        public IHttpActionResult GameSettingsUpload([FromBody] string[] urls)
+   [HttpGet]
+        [Route("api/Store/CommonStatus")]
+        public IHttpActionResult CommonStatus()
         {
-            IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
-
-            if (urls != null && urls.Any())
-            {
-              //  result = SettingsProcessor.Instance.Process(urls, Request);
-            }
-
-            return result;
+            var status = SettingsProcessor.Instance.GetCommonProcessingStatus();
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
         }
 
         /// <summary>
-        /// Upload room settings.
+        /// Get sale status.
         /// </summary>
-        [Route("api/RoomSettingsStoreUpload")]
-        public IHttpActionResult RoomSettingsUpload([FromBody] string[] urls)
+        [HttpGet]
+        [Route("api/Store/SaleStatus")]
+        public IHttpActionResult SaleStatus()
         {
-            IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Urls are empty")));
+            var status = SettingsProcessor.Instance.GetSaleProcessingStatus();
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
+        }
 
+        /// <summary>
+        /// Upload common store.
+        /// </summary>
+        [Route("api/Store/CommonStoreUpload")]
+        public IHttpActionResult GameSettingsUpload([FromBody] string[] urls)
+        {
             if (urls != null && urls.Any())
             {
-              //  result = SettingsProcessor.Instance.Process(urls, Request);
+                if (SettingsProcessor.Instance.GetCommonProcessingStatus().Status == WorkStatus.Idle)
+                {
+                    SettingsProcessor.Instance.ProcessCommonStore();
+                    return Ok();
+                }
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Common Store is Processed")));
             }
 
-            return result;
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), Constants.EmptyUrls)));
+        }
 
+        /// <summary>
+        /// Upload sale store.
+        /// </summary>
+        [Route("api/Store/SaleStoreUpload")]
+        public IHttpActionResult RoomSettingsUpload([FromBody] string[] urls)
+        {
+            if (urls != null && urls.Any())
+            {
+                if (SettingsProcessor.Instance.GetSaleProcessingStatus().Status == WorkStatus.Idle)
+                {
+                    SettingsProcessor.Instance.ProcessSaleStore();
+                    return Ok();
+                }
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Sale Store is Processed")));
+            }
+
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), Constants.EmptyUrls)));
         }
 
         /// <summary>
         /// Get settings activity.
         /// </summary>
         [HttpPost]
-        [Route("api/GetSettingsActivity")]
-        public IHttpActionResult GetSettingsActivity(SettingsActivity activity)
+        [Route("api/Store/SwitchSettings")]
+        public IHttpActionResult SwitchStoreSettings(SettingsActivity activity)
         {
             IHttpActionResult result = ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Activities are empty")));
 
             if (activity != null)
             {
                 result = ResponseMessage(activity.Common != activity.Sale
-                                ? Request.CreateResponse(HttpStatusCode.OK, new ErrorBody(HttpStatusCode.OK.ToString(), "Settings are applying"))
+                                ? Request.CreateResponse(HttpStatusCode.OK, new ErrorBody(HttpStatusCode.OK.ToString(), "Activities were applied"))
                                 : Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Invalid activities")));
             }
 

@@ -25,8 +25,8 @@ namespace DungeonKings.Controllers
         /// Get game status.
         /// </summary>
         [HttpGet]
-        [Route("api/Settings/Status")]
-        public IHttpActionResult GameSettingsStatus()
+        [Route("api/Settings/SettingsStatus")]
+        public IHttpActionResult SettingsStatus()
         {
             var status = SettingsProcessor.Instance.GetGameProcessingStatus();
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
@@ -36,7 +36,7 @@ namespace DungeonKings.Controllers
         /// Upload game settings.
         /// </summary>
         [HttpPost]
-        [Route("api/Settings/Submit")]
+        [Route("api/Settings/SettingsSubmit")]
         public IHttpActionResult GameSettingsSubmit([FromBody] string[] urls)
         {
             if (urls != null && urls.Any())

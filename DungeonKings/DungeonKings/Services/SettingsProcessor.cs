@@ -9,7 +9,6 @@ namespace DungeonKings.Services
     {
         private static readonly Timer EnvironmentTimer = new Timer(60000);
         private static readonly Timer GameSettingsTimer = new Timer(60000);
-        private static readonly Timer RoomSettingsTimer = new Timer(60000);
         private static readonly Timer SaleStoreTImer = new Timer(60000);
         private static readonly Timer CommonStoreTImer = new Timer(60000);
 
@@ -18,7 +17,6 @@ namespace DungeonKings.Services
         public SettingsProcessor()
         {
             GameSettingsTimer.Elapsed += GameTimerElapsed;
-            RoomSettingsTimer.Elapsed += RoomTimerElapsed;
             SaleStoreTImer.Elapsed += SaleStoreTimerElapsed;
             CommonStoreTImer.Elapsed += CommonStoreTImerElapsed;
             EnvironmentTimer.Elapsed += EnvironmentTimerElapsed;
@@ -34,11 +32,6 @@ namespace DungeonKings.Services
         public ProcessingStatus GetEnvironmentProcessingStatus()
         {
             return EnvironmentTimer.Enabled ? GetProcessedStatus() : GetIddleStatus();
-        }
-
-        public ProcessingStatus GetRoomProcessingStatus()
-        {
-            return RoomSettingsTimer.Enabled ? GetProcessedStatus() : GetIddleStatus();
         }
 
         public ProcessingStatus GetCommonProcessingStatus()
@@ -61,11 +54,6 @@ namespace DungeonKings.Services
             GameSettingsTimer.Start();
         }
 
-        public void ProcessRoomSettings()
-        {
-            RoomSettingsTimer.Start();
-        }
-
         public void ProcessCommonStore()
         {
             CommonStoreTImer.Start();
@@ -79,11 +67,6 @@ namespace DungeonKings.Services
         private void GameTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             GameSettingsTimer.Stop();
-        }
-
-        private void RoomTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            RoomSettingsTimer.Stop();
         }
 
         private void CommonStoreTImerElapsed(object sender, System.Timers.ElapsedEventArgs e)

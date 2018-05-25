@@ -25,7 +25,7 @@ namespace DungeonKings.Controllers
         /// Get game status.
         /// </summary>
         [HttpGet]
-        [Route("api/Settings/GameStatus")]
+        [Route("api/Settings/Status")]
         public IHttpActionResult GameSettingsStatus()
         {
             var status = SettingsProcessor.Instance.GetGameProcessingStatus();
@@ -33,21 +33,10 @@ namespace DungeonKings.Controllers
         }
 
         /// <summary>
-        /// Get room status.
-        /// </summary>
-        [HttpGet]
-        [Route("api/Settings/RoomStatus")]
-        public IHttpActionResult RoomSettingsStatus()
-        {
-            var status = SettingsProcessor.Instance.GetRoomProcessingStatus();
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, status));
-        }
-
-        /// <summary>
         /// Upload game settings.
         /// </summary>
         [HttpPost]
-        [Route("api/Settings/GameSubmit")]
+        [Route("api/Settings/Submit")]
         public IHttpActionResult GameSettingsSubmit([FromBody] string[] urls)
         {
             if (urls != null && urls.Any())
@@ -63,27 +52,6 @@ namespace DungeonKings.Controllers
             }
 
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), Constants.EmptyUrls)));
-        }
-
-        /// <summary>
-        /// Upload room settings.
-        /// </summary>
-        [HttpPost]
-        [Route("api/Settings/RoomSubmit")]
-        public IHttpActionResult RoomSettingsSubmit([FromBody] string[] urls)
-        {
-            if (urls != null && urls.Any())
-            {
-                if (SettingsProcessor.Instance.GetRoomProcessingStatus().Status == WorkStatus.Idle)
-                {
-                    SettingsProcessor.Instance.ProcessRoomSettings();
-                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, Constants.StartProcess));
-                }
-
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), "Room Settings is Processed")));
-            }
-
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorBody(HttpStatusCode.BadRequest.ToString(), Constants.EmptyUrls)));
-        }
+        }     
     }
 }
